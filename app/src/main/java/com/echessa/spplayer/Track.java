@@ -1,4 +1,4 @@
-package com.echessa.spplayer;
+package com.bitzend.tuksosc;
 
 import com.google.gson.annotations.SerializedName;
 
