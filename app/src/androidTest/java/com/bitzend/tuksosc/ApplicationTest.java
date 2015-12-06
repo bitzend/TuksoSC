@@ -1,4 +1,4 @@
-package com.echessa.spplayer;
+package com.bitzend.tuksosc;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
