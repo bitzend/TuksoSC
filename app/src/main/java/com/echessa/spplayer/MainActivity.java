@@ -1,4 +1,4 @@
-package com.echessa.spplayer;
+package com.bitzend.tuksosc;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
