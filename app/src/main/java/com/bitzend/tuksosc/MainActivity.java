@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mSelectedTrackImage;
     private MediaPlayer mMediaPlayer;
     private ImageView mPlayerControl;
+    private int WhichTrack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,21 +79,25 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Track track = mListItems.get(position);
 
-                mSelectedTrackTitle.setText(track.getTitle());
-                Picasso.with(MainActivity.this).load(track.getArtworkURL()).into(mSelectedTrackImage);
+                if (position != WhichTrack) {
+                    Track track = mListItems.get(position);
 
-                if (mMediaPlayer.isPlaying()) {
-                    mMediaPlayer.stop();
-                    mMediaPlayer.reset();
-                }
+                    mSelectedTrackTitle.setText(track.getTitle());
+                    Picasso.with(MainActivity.this).load(track.getArtworkURL()).into(mSelectedTrackImage);
 
-                try {
-                    mMediaPlayer.setDataSource(track.getStreamURL() + "?client_id=" + Config.CLIENT_ID);
-                    mMediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    if (mMediaPlayer.isPlaying()) {
+                        mMediaPlayer.stop();
+                        mMediaPlayer.reset();
+                    }
+
+                    try {
+                        mMediaPlayer.setDataSource(track.getStreamURL() + "?client_id=" + Config.CLIENT_ID);
+                        mMediaPlayer.prepareAsync();
+                        WhichTrack = position;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
