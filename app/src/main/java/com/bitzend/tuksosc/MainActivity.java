@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mPlayerControl.setImageResource(R.drawable.ic_play);
+                mMediaPlayer.stop();
+
+                mMediaPlayer.reset();
             }
         });
 
