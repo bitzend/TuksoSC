@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SCService scService = SoundCloud.getService();
-        scService.getRecentTracks(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()), new Callback<List<Track>>() {
+        scService.getRecentTracks( new String ("3124636"), new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
                 loadTracks(tracks);
