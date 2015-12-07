@@ -109,10 +109,27 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Error: " + error);
             }
         });
+
+        scService.getRecentTracks( new String ("55843688"), new Callback<List<Track>>() {
+            @Override
+            public void success(List<Track> tracks, Response response) {
+                addTracks(tracks);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "Error: " + error);
+            }
+        });
     }
 
     private void loadTracks(List<Track> tracks) {
         mListItems.clear();
+        mListItems.addAll(tracks);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void addTracks(List<Track> tracks) {
         mListItems.addAll(tracks);
         mAdapter.notifyDataSetChanged();
     }
