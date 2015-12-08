@@ -2,8 +2,16 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
+    <item android:id="@+id/mode_single"
+          android:title="@string/mode_single"
           android:orderInCategory="100"
+          app:showAsAction="never"/>
+      <item android:id="@+id/mode_sequence"
+          android:title="@string/mode_sequence"
+          android:orderInCategory="200"
+          app:showAsAction="never"/>
+      <item android:id="@+id/mode_shuffle"
+          android:title="@string/mode_shuffle"
+          android:orderInCategory="300"
           app:showAsAction="never"/>
 </menu>

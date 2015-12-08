@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Random;
 import java.util.List;
 
 import retrofit.Callback;
@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
     private ImageView mPlayerControl;
     private int WhichTrack;
+    private int playMode = 0;
+    private  Random randomINT = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,24 @@ public class MainActivity extends AppCompatActivity {
             public void onCompletion(MediaPlayer mp) {
                 mPlayerControl.setImageResource(R.drawable.ic_play);
                 mMediaPlayer.stop();
-
                 mMediaPlayer.reset();
+
+                if (playMode > 0){
+                    int trackCount = mListItems.size();
+
+                    if ( playMode == 1 ){
+                        if (WhichTrack < ( trackCount -1 ) ){
+                            WhichTrack +=1;
+                        } else {
+                            WhichTrack = 0;
+                        }
+                    }
+                    if ( playMode == 2 ) {
+                        WhichTrack = randomINT.nextInt(trackCount);
+                    }
+
+                    playTrack();
+                }
             }
         });
 
@@ -81,23 +99,15 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if (position != WhichTrack) {
-                    Track track = mListItems.get(position);
 
-                    mSelectedTrackTitle.setText(track.getTitle());
-                    Picasso.with(MainActivity.this).load(track.getArtworkURL()).into(mSelectedTrackImage);
+                    WhichTrack = position;
 
                     if (mMediaPlayer.isPlaying()) {
                         mMediaPlayer.stop();
                         mMediaPlayer.reset();
                     }
 
-                    try {
-                        mMediaPlayer.setDataSource(track.getStreamURL() + "?client_id=" + Config.CLIENT_ID);
-                        mMediaPlayer.prepareAsync();
-                        WhichTrack = position;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    playTrack();
                 }
             }
         });
@@ -140,6 +150,19 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
+    private void playTrack() {
+        Track track = mListItems.get(WhichTrack);
+        mSelectedTrackTitle.setText(track.getTitle());
+        Picasso.with(MainActivity.this).load(track.getArtworkURL()).into(mSelectedTrackImage);
+        try {
+            mMediaPlayer.setDataSource(track.getStreamURL() + "?client_id=" + Config.CLIENT_ID);
+            mMediaPlayer.prepareAsync();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void togglePlayPause() {
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
@@ -178,10 +201,20 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.mode_single) {
+            playMode = 0;
             return true;
         }
 
+        if (id == R.id.mode_sequence) {
+            playMode = 1;
+            return true;
+        }
+
+        if (id == R.id.mode_shuffle) {
+            playMode = 2;
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }
